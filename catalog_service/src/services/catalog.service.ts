@@ -7,20 +7,29 @@ export class CatalogService{
     constructor(repository : ICatalogRepository){
         this._repository = repository
     }
-    createProduct(input:Product){
+    async createProduct(input:Product){
+        const data = await this._repository.create(input)
+
+        if(!data.id){
+            throw new Error("unable to create product")
+        }
+        return data
 
     }
 
-    updateProduct(data: Product){
-
+    async updateProduct(data: Product){
+        const da = await this._repository.update(data);
+        return da
     }
 
-    getProducts(limit:number , offset:number){
-
+    async getProducts(limit:number , offset:number){
+        const products = await this._repository.find(limit , offset)
+        return products  
     }
 
-    getProduct(id:number){
-
+    async getProduct(id:number){
+        const product = await this._repository.findOne(id)
+        return product
     }
 
     deleteProduct(id:number){
